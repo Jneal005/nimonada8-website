@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useDatabase } from '../hooks/useDatabase';
-import { useAuthContext } from './AuthProvider';
+import emailjs from '@emailjs/browser';
 
 const PrayerRequestForm = () => {
   const [name, setName] = useState('');
@@ -10,8 +10,10 @@ const PrayerRequestForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
-  const { insertData } = useDatabase();
-  const { user } = useAuthContext();
+  const [showPublicRequests, setShowPublicRequests] = useState(false);
+  const [publicRequests, setPublicRequests] = useState([]);
+  const [loadingRequests, setLoadingRequests] = useState(false);
+  const { insertData, fetchData } = useDatabase();
 
   // Daily verse and reflection
   const dailyVerse = {
@@ -20,19 +22,77 @@ const PrayerRequestForm = () => {
     reflection: "God is our ultimate source of strength and protection. When we place our trust in Him, He provides the help we need."
   };
 
+  // Fetch public prayer requests
+  const fetchPublicRequests = async () => {
+    setLoadingRequests(true);
+    try {
+      const data = await fetchData('prayer_requests', {
+        filters: [{ column: 'is_public', operator: 'eq', value: true }],
+        orderBy: { column: 'created_at', ascending: false },
+        limit: 20
+      });
+      setPublicRequests(data || []);
+    } catch (err) {
+      console.error('Error fetching public requests:', err);
+    } finally {
+      setLoadingRequests(false);
+    }
+  };
+
+  // Toggle public requests dropdown
+  const togglePublicRequests = () => {
+    if (!showPublicRequests && publicRequests.length === 0) {
+      fetchPublicRequests();
+    }
+    setShowPublicRequests(!showPublicRequests);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
     
     try {
+      // Store in database
       await insertData('prayer_requests', {
         name,
         request,
         is_public: isPublic,
-        user_id: user?.id,
         created_at: new Date().toISOString(),
       });
+      
+      // Send email notification for non-public requests
+      if (!isPublic) {
+        const emailParams = {
+          to_email: 'jordaneneal005@gmail.com',
+          from_name: name,
+          prayer_request: request,
+          is_public: 'No',
+          submitted_at: new Date().toLocaleString()
+        };
+        
+        // Check if EmailJS is configured
+        const emailjsConfigured = process.env.REACT_APP_EMAILJS_SERVICE_ID && 
+                                 process.env.REACT_APP_EMAILJS_TEMPLATE_ID && 
+                                 process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+        
+        if (emailjsConfigured) {
+          try {
+            await emailjs.send(
+              process.env.REACT_APP_EMAILJS_SERVICE_ID,
+              process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+              emailParams,
+              process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+            );
+            console.log('Email sent successfully');
+          } catch (emailError) {
+            console.error('Email sending failed:', emailError);
+            // Don't fail the entire submission if email fails
+          }
+        } else {
+          console.warn('EmailJS not configured. Prayer request saved but email not sent.');
+        }
+      }
       
       setSuccess(true);
       setName('');
@@ -63,6 +123,47 @@ const PrayerRequestForm = () => {
             "{dailyVerse.text}" - {dailyVerse.reference}
           </blockquote>
           <p className="text-gray-600">{dailyVerse.reflection}</p>
+        </div>
+
+        {/* Public Prayer Requests Dropdown */}
+        <div className="mb-6">
+          <button
+            type="button"
+            onClick={togglePublicRequests}
+            className="w-full bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-between"
+          >
+            <span>View Public Prayer Requests</span>
+            <span className={`transform transition-transform ${showPublicRequests ? 'rotate-180' : ''}`}>
+              ▼
+            </span>
+          </button>
+          
+          {showPublicRequests && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mt-2 bg-white border border-gray-200 rounded-lg max-h-64 overflow-y-auto"
+            >
+              {loadingRequests ? (
+                <div className="p-4 text-center text-gray-500">Loading prayer requests...</div>
+              ) : publicRequests.length > 0 ? (
+                <div className="divide-y divide-gray-100">
+                  {publicRequests.map((req, index) => (
+                    <div key={index} className="p-4">
+                      <div className="text-sm text-gray-500 mb-1">
+                        {new Date(req.created_at).toLocaleDateString()}
+                      </div>
+                      <p className="text-gray-800">{req.request}</p>
+                      <div className="text-xs text-gray-400 mt-2">- {req.name || 'Anonymous'}</div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-4 text-center text-gray-500">No public prayer requests yet.</div>
+              )}
+            </motion.div>
+          )}
         </div>
         
         {success ? (
@@ -112,17 +213,22 @@ const PrayerRequestForm = () => {
             ></textarea>
           </div>
           
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="isPublic"
-              checked={isPublic}
-              onChange={(e) => setIsPublic(e.target.checked)}
-              className="h-4 w-4 text-orange focus:ring-orange border-gray-300 rounded"
-            />
-            <label htmlFor="isPublic" className="ml-2 block text-sm text-gray-700">
-              Make this prayer request public (shared anonymously with our community)
-            </label>
+          <div className="space-y-2">
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="isPublic"
+                checked={isPublic}
+                onChange={(e) => setIsPublic(e.target.checked)}
+                className="h-4 w-4 text-orange focus:ring-orange border-gray-300 rounded"
+              />
+              <label htmlFor="isPublic" className="ml-2 block text-sm text-gray-700">
+                Make this prayer request public (shared anonymously with our community)
+              </label>
+            </div>
+            <p className="text-xs text-gray-500 ml-6">
+              Note: Private prayer requests will be sent to Raven for personal prayer.
+            </p>
           </div>
           
           <motion.button

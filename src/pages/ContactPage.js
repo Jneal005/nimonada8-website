@@ -144,7 +144,7 @@ const ContactPage = () => {
                 </div>
                 <div className="ml-4">
                   <h3 className="text-lg font-medium text-gray-900">Email</h3>
-                  <p className="mt-1 text-gray-600">info@limonadaministry.org</p>
+                  <p className="mt-1 text-gray-600">info@holysipsministry.org</p>
                   <p className="mt-1 text-sm text-gray-500">We'll respond as soon as possible</p>
                 </div>
               </motion.div>

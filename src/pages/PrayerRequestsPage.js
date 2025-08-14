@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import PrayerRequestForm from '../components/PrayerRequestForm';
+import BiblicalChatbot from '../components/BiblicalChatbot';
+import Comments from '../components/Comments';
 
 const PrayerRequestsPage = () => {
   return (
@@ -32,17 +34,8 @@ const PrayerRequestsPage = () => {
           </div>
         </section>
 
-        {/* Prayer Request Form Section */}
-        <section className="py-12 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto">
-              <PrayerRequestForm />
-            </div>
-          </div>
-        </section>
-
         {/* Community Prayer Section */}
-        <section className="py-12 bg-gray-50">
+        <section className="py-12 bg-white">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold text-gray-800 mb-8">Community Prayers</h2>
             
@@ -53,37 +46,77 @@ const PrayerRequestsPage = () => {
                   id: 1,
                   name: 'Sarah J.',
                   request: 'Please pray for my mother who is recovering from surgery.',
-                  date: '2 days ago'
+                  date: '2 days ago',
+                  comments: [
+                    {
+                      id: 1,
+                      name: 'Pastor John',
+                      text: 'Praying for your mother\'s swift recovery. God\'s healing hand is upon her.',
+                      date: '1 day ago'
+                    },
+                    {
+                      id: 2,
+                      name: 'Mary K.',
+                      text: 'Sending love and prayers your way. May God grant her strength.',
+                      date: '2 days ago'
+                    }
+                  ]
                 },
                 {
                   id: 2,
                   name: 'Michael T.',
                   request: 'Seeking prayers for guidance in my career path.',
-                  date: '3 days ago'
+                  date: '3 days ago',
+                  comments: [
+                    {
+                      id: 3,
+                      name: 'Jennifer L.',
+                      text: 'Trust in the Lord\'s plan for your life. He will guide your steps.',
+                      date: '2 days ago'
+                    }
+                  ]
                 },
                 {
                   id: 3,
                   name: 'Anonymous',
                   request: 'Prayers for healing and strength during a difficult time.',
-                  date: '1 week ago'
+                  date: '1 week ago',
+                  comments: []
                 },
                 {
                   id: 4,
                   name: 'Rebecca L.',
                   request: 'Please pray for my family as we navigate some challenges.',
-                  date: '1 week ago'
+                  date: '1 week ago',
+                  comments: [
+                    {
+                      id: 4,
+                      name: 'Tom R.',
+                      text: 'Your family is in our prayers. God will see you through this.',
+                      date: '5 days ago'
+                    }
+                  ]
                 },
                 {
                   id: 5,
                   name: 'David W.',
                   request: 'Asking for prayers for my upcoming medical tests.',
-                  date: '2 weeks ago'
+                  date: '2 weeks ago',
+                  comments: []
                 },
                 {
                   id: 6,
                   name: 'Anonymous',
                   request: 'Prayers for peace and comfort during a time of loss.',
-                  date: '2 weeks ago'
+                  date: '2 weeks ago',
+                  comments: [
+                    {
+                      id: 5,
+                      name: 'Grace M.',
+                      text: 'May God\'s peace that surpasses understanding comfort you.',
+                      date: '1 week ago'
+                    }
+                  ]
                 }
               ].map(prayer => (
                 <motion.div 
@@ -98,13 +131,49 @@ const PrayerRequestsPage = () => {
                     <span className="text-sm text-gray-500">{prayer.date}</span>
                   </div>
                   <p className="text-gray-700 mb-4">{prayer.request}</p>
-                  <div className="flex justify-end">
+                  <div className="flex justify-end mb-4">
                     <button className="text-orange hover:text-orange/80 text-sm font-medium flex items-center">
                       <span className="mr-1">🙏</span> Praying
                     </button>
                   </div>
+                  <Comments prayerId={prayer.id} initialComments={prayer.comments} />
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Prayer Request Form Section */}
+        <section className="py-12 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto">
+              <PrayerRequestForm />
+            </div>
+          </div>
+        </section>
+
+        {/* Biblical AI Chatbot Section */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-center mb-8"
+              >
+                <h2 className="text-3xl font-bold text-gray-800 mb-4">Biblical AI Assistant</h2>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                  Need spiritual guidance or have questions about faith? Chat with our AI assistant for biblical wisdom and encouragement.
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <BiblicalChatbot />
+              </motion.div>
             </div>
           </div>
         </section>

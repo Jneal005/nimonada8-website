@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useAuthContext } from './AuthProvider';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, signOut } = useAuthContext();
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -40,27 +38,9 @@ const Navbar = () => {
             <Link to="/contact" className="text-gray-800 hover:text-orange font-medium transition-colors">
               Contact
             </Link>
-            
-            {user ? (
-              <div className="flex items-center space-x-4">
-                <Link to="/account" className="text-gray-800 hover:text-orange font-medium transition-colors">
-                  My Account
-                </Link>
-                <button
-                  onClick={signOut}
-                  className="bg-orange hover:bg-orange/90 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <Link 
-                to="/login" 
-                className="bg-orange hover:bg-orange/90 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Sign In
-              </Link>
-            )}
+            <Link to="/events" className="text-gray-800 hover:text-orange font-medium transition-colors">
+              Events
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -127,35 +107,13 @@ const Navbar = () => {
             >
               Contact
             </Link>
-            
-            {user ? (
-              <>
-                <Link 
-                  to="/account" 
-                  className="text-gray-800 hover:text-orange font-medium transition-colors py-2"
-                  onClick={toggleMenu}
-                >
-                  My Account
-                </Link>
-                <button
-                  onClick={() => {
-                    signOut();
-                    toggleMenu();
-                  }}
-                  className="bg-orange hover:bg-orange/90 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <Link 
-                to="/login" 
-                className="bg-orange hover:bg-orange/90 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors inline-block"
-                onClick={toggleMenu}
-              >
-                Sign In
-              </Link>
-            )}
+            <Link 
+              to="/events" 
+              className="text-gray-800 hover:text-orange font-medium transition-colors py-2"
+              onClick={toggleMenu}
+            >
+              Events
+            </Link>
           </div>
         </motion.div>
       )}

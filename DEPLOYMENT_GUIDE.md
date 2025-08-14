@@ -1,6 +1,6 @@
 # 🚀 Deployment Guide - Free Custom Domain
 
-This guide will help you deploy your Limonada app with a free custom domain.
+This guide will help you deploy your Holy Sips app with a free custom domain.
 
 ## 🎯 **Recommended: Vercel (Best for React Apps)**
 
@@ -20,7 +20,7 @@ This guide will help you deploy your Limonada app with a free custom domain.
 ### **Step 3: Add Custom Domain**
 1. In your Vercel dashboard, go to **Settings** → **Domains**
 2. Click **"Add Domain"**
-3. Enter your custom domain (e.g., `limonada.com`)
+3. Enter your custom domain (e.g., `holysips.com`)
 4. Follow the DNS configuration instructions
 
 ## 🌐 **Alternative: Netlify**
@@ -55,7 +55,7 @@ Add these scripts:
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://yourusername.github.io/limonada"
+  "homepage": "https://yourusername.github.io/holy-sips"
 }
 ```
 
@@ -172,4 +172,4 @@ netlify deploy
 4. **Set up CI/CD** for automatic deployments
 5. **Optimize performance** with caching and compression
 
-Your Limonada app will be live with a custom domain! 🍋✨ 
+Your Holy Sips app will be live with a custom domain! 🍋✨

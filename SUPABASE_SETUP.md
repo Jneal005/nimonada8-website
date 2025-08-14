@@ -1,6 +1,6 @@
-# Supabase Setup Guide for Limonada
+# Supabase Setup Guide for Holy Sips
 
-This guide will help you set up Supabase as your backend service for the Limonada application.
+This guide will help you set up Supabase as your backend service for the Holy Sips application.
 
 ## 🚀 Quick Setup
 
@@ -10,7 +10,7 @@ This guide will help you set up Supabase as your backend service for the Limonad
 2. Click "New Project"
 3. Choose your organization
 4. Enter project details:
-   - **Name**: `limonada`
+   - **Name**: `holy-sips`
    - **Database Password**: Choose a strong password
    - **Region**: Select the closest region to your users
 5. Click "Create new project"
@@ -72,10 +72,20 @@ CREATE TABLE reviews (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Create a prayer requests table
+CREATE TABLE prayer_requests (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  request TEXT NOT NULL,
+  is_public BOOLEAN DEFAULT false,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Enable Row Level Security (RLS)
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE lemonade_stands ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
+ALTER TABLE prayer_requests ENABLE ROW LEVEL SECURITY;
 
 -- Create RLS policies
 CREATE POLICY "Users can view their own profile" ON profiles
@@ -98,6 +108,13 @@ CREATE POLICY "Anyone can view reviews" ON reviews
 
 CREATE POLICY "Authenticated users can create reviews" ON reviews
   FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- Prayer requests policies
+CREATE POLICY "Anyone can view public prayer requests" ON prayer_requests
+  FOR SELECT USING (is_public = true);
+
+CREATE POLICY "Anyone can create prayer requests" ON prayer_requests
+  FOR INSERT WITH CHECK (true);
 
 -- Create a function to handle new user signups
 CREATE OR REPLACE FUNCTION handle_new_user()
@@ -206,4 +223,4 @@ CREATE TRIGGER on_auth_user_created
    - Ensure storage buckets are created
    - Check bucket permissions and policies
 
-For more help, check the [Supabase Discord](https://discord.supabase.com) or [GitHub Issues](https://github.com/supabase/supabase/issues). 
+For more help, check the [Supabase Discord](https://discord.supabase.com) or [GitHub Issues](https://github.com/supabase/supabase/issues).

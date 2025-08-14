@@ -12,7 +12,7 @@ const EventsPage = () => {
   const events = [
     {
       id: 1,
-      name: 'Downtown Limonada Pop-up',
+      name: 'Downtown Holy Sips Pop-up',
       address: '123 Main Street, Downtown',
       date: '2023-07-15',
       time: '10:00 AM - 4:00 PM',
@@ -22,7 +22,7 @@ const EventsPage = () => {
     },
     {
       id: 2,
-      name: 'Beach Outreach',
+      name: 'College Campus',
       address: 'Oceanview Beach, Pier 7',
       date: '2023-07-22',
       time: '11:00 AM - 5:00 PM',
@@ -181,7 +181,7 @@ const EventsPage = () => {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Want to Host Limonada at Your Event?
+            Want to Host Holy Sips at Your Event?
           </motion.h2>
           <motion.p 
             className="text-xl text-gray-700 mb-8"
@@ -202,7 +202,7 @@ const EventsPage = () => {
               to="/contact" 
               className="inline-block bg-orange hover:bg-orange/90 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors"
             >
-              Request Limonada
+              Request Holy Sips
             </Link>
           </motion.div>
         </div>

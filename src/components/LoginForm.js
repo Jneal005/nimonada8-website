@@ -29,7 +29,7 @@ const LoginForm = () => {
             {isSignUp ? 'Create your account' : 'Sign in to your account'}
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Welcome to Limonada! 🍋
+            Welcome to Holy Sips! 🍋
           </p>
         </div>
         
@@ -114,4 +114,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm 
+export default LoginForm

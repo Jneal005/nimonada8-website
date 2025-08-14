@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
@@ -63,13 +64,15 @@ const Hero = () => {
               >
                 Find Us Today
               </motion.button>
-              <motion.button 
-                className="bg-white hover:bg-gray-100 text-orange border-2 border-orange px-6 py-3 rounded-lg font-medium text-lg transition-colors"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Our Menu
-              </motion.button>
+              <Link to="/menu">
+                <motion.button 
+                  className="bg-white hover:bg-gray-100 text-orange border-2 border-orange px-6 py-3 rounded-lg font-medium text-lg transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Our Menu
+                </motion.button>
+              </Link>
             </div>
           </motion.div>
 

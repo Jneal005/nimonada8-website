@@ -9,8 +9,6 @@ const MenuPage = () => {
 
   const categories = [
     { id: 'drinks', name: 'Drinks' },
-    { id: 'food', name: 'Food' },
-    { id: 'desserts', name: 'Desserts' },
     { id: 'specials', name: 'Specials' }
   ];
 
@@ -72,97 +70,84 @@ const MenuPage = () => {
         popular: true,
         vegan: true,
         glutenFree: true
-      }
-    ],
-    food: [
+      },
       {
         id: 7,
-        name: 'Avocado Toast',
-        description: 'Whole grain toast with smashed avocado, cherry tomatoes, and microgreens',
-        price: 7.99,
-        image: '🥑',
+        name: 'PASSION FOR CHRIST',
+        description: 'A passionate blend of tropical passion fruit with divine citrus notes',
+        price: 5.25,
+        image: '💛',
+        popular: true,
         vegan: true,
-        glutenFree: false
+        glutenFree: true
       },
       {
         id: 8,
-        name: 'Mediterranean Wrap',
-        description: 'Hummus, feta, olives, and veggies in a whole wheat wrap',
-        price: 8.99,
-        image: '🌯',
-        vegan: false,
-        glutenFree: false
+        name: 'BERRIED N\' DA WORD',
+        description: 'Mixed berry lemonade that speaks to your soul',
+        price: 4.99,
+        image: '🫐',
+        vegan: true,
+        glutenFree: true
       },
       {
         id: 9,
-        name: 'Quinoa Salad Bowl',
-        description: 'Protein-packed quinoa with seasonal vegetables and lemon vinaigrette',
-        price: 9.50,
-        image: '🥗',
+        name: 'PEACH THE GOSPEL',
+        description: 'Sweet peach lemonade that spreads the good news of flavor',
+        price: 4.75,
+        image: '🍑',
         popular: true,
         vegan: true,
         glutenFree: true
       },
       {
         id: 10,
-        name: 'Chicken Pesto Panini',
-        description: 'Grilled chicken with pesto, mozzarella, and roasted red peppers',
-        price: 10.99,
-        image: '🥪',
-        vegan: false,
-        glutenFree: false
-      }
-    ],
-    desserts: [
+        name: 'GLORY GLOW',
+        description: 'Golden turmeric and ginger lemonade that radiates divine light',
+        price: 5.50,
+        image: '✨',
+        vegan: true,
+        glutenFree: true
+      },
       {
         id: 11,
-        name: 'Lemon Bars',
-        description: 'Tangy lemon filling on a buttery shortbread crust',
-        price: 3.99,
-        image: '🍰',
-        popular: true,
-        vegan: false,
-        glutenFree: false
+        name: 'HEAVENLY BREEZE',
+        description: 'Light and refreshing cucumber mint lemonade from above',
+        price: 4.50,
+        image: '🌿',
+        vegan: true,
+        glutenFree: true
       },
       {
         id: 12,
-        name: 'Vegan Banana Bread',
-        description: 'Moist banana bread made with plant-based ingredients',
-        price: 4.50,
-        image: '🍌',
+        name: 'LORD HAVE MERCY',
+        description: 'Spicy jalapeño lemonade that will make you call on the Lord',
+        price: 5.25,
+        image: '🌶️',
         vegan: true,
-        glutenFree: false
-      },
-      {
-        id: 13,
-        name: 'Gluten-Free Brownie',
-        description: 'Rich chocolate brownie that\'s gluten-free',
-        price: 4.99,
-        image: '🍫',
-        vegan: false,
         glutenFree: true
       }
     ],
     specials: [
       {
-        id: 14,
-        name: 'Sunday Blessing Combo',
-        description: 'Any lemonade with your choice of dessert',
-        price: 7.99,
+        id: 20,
+        name: 'Sunday Blessing Special',
+        description: 'Any premium lemonade at a special discounted price',
+        price: 3.99,
         image: '✝️',
         popular: true,
-        vegan: false,
-        glutenFree: false
+        vegan: true,
+        glutenFree: true
       },
       {
-        id: 15,
+        id: 21,
         name: 'Family Fellowship Pack',
-        description: 'Four lemonades and two desserts of your choice',
-        price: 19.99,
+        description: 'Four lemonades of your choice - perfect for sharing',
+        price: 14.99,
         image: '👨‍👩‍👧‍👦',
         popular: true,
-        vegan: false,
-        glutenFree: false
+        vegan: true,
+        glutenFree: true
       }
     ]
   };
@@ -189,7 +174,7 @@ const MenuPage = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Refreshing drinks and nourishing food made with love and the finest ingredients
+              Refreshing drinks made with love and the finest ingredients
             </motion.p>
           </div>
         </section>
