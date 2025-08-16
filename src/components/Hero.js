@@ -27,12 +27,14 @@ const Hero = () => {
       </motion.div>
 
       <div className="container mx-auto px-4 relative z-10">
+
+
         {/* Bible Verse Banner */}
         <motion.div 
           className="bg-white/90 p-4 rounded-lg shadow-lg mb-12 text-center"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
           <p className="text-lg md:text-xl font-semibold text-gray-800">
             "Go therefore and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit." - Matthew 28:19
@@ -83,9 +85,13 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.5 }}
           >
             <div className="relative">
-              <div className="bg-white p-2 rounded-full shadow-xl">
-                <div className="bg-lemonYellow rounded-full p-8 aspect-square flex items-center justify-center">
-                  <span className="text-9xl">🍋</span>
+              <div className="bg-gradient-to-br from-lemonYellow via-yellow-300 to-orange-200 p-2 rounded-full shadow-xl">
+                <div className="bg-gradient-to-br from-lemonYellow via-yellow-400 to-orange-300 rounded-full p-8 aspect-square flex items-center justify-center">
+                  <img 
+                    src="/holy-sips-logo.svg" 
+                    alt="Holy Sips Logo" 
+                    className="w-48 h-48 md:w-64 md:h-64 drop-shadow-lg filter brightness-110 contrast-110 mix-blend-multiply"
+                  />
                 </div>
               </div>
               <motion.div 

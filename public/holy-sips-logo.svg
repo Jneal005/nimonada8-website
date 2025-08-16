@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <!-- Background -->
+  <rect width="400" height="400" fill="#F4D03F"/>
+  
+  <!-- Halo -->
+  <ellipse cx="200" cy="120" rx="60" ry="12" fill="none" stroke="#8B4513" stroke-width="6"/>
+  
+  <!-- Lemon -->
+  <ellipse cx="200" cy="180" rx="50" ry="65" fill="#FFD700"/>
+  <ellipse cx="200" cy="180" rx="45" ry="60" fill="#FFA500"/>
+  
+  <!-- Lemon texture -->
+  <ellipse cx="185" cy="165" rx="8" ry="12" fill="#FFE55C" opacity="0.7"/>
+  <ellipse cx="210" cy="175" rx="6" ry="10" fill="#FFE55C" opacity="0.7"/>
+  <ellipse cx="195" cy="195" rx="7" ry="11" fill="#FFE55C" opacity="0.7"/>
+  
+  <!-- Leaf -->
+  <path d="M 200 115 Q 185 105 175 120 Q 180 135 200 130 Z" fill="#228B22"/>
+  <path d="M 180 115 Q 185 120 190 125" fill="none" stroke="#006400" stroke-width="2"/>
+  
+  <!-- Stem -->
+  <rect x="198" y="115" width="4" height="15" fill="#8B4513"/>
+  
+  <!-- Text -->
+  <text x="200" y="280" font-family="serif" font-size="36" font-weight="bold" text-anchor="middle" fill="#8B4513">Holy Sips</text>
+  <text x="200" y="320" font-family="serif" font-size="18" text-anchor="middle" fill="#8B4513">LEMONADE BUSINESS</text>
+</svg>

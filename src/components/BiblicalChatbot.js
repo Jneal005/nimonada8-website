@@ -1,11 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { generateBiblicalResponse, isGoogleAIConfigured } from '../lib/googleAI';
 
 const BiblicalChatbot = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! I'm here to help you with biblical questions and provide spiritual guidance. How can I assist you today?",
+      text: "Welcome! I'm here to share biblical wisdom and provide spiritual encouragement. You can ask me about prayer, faith, love, forgiveness, hope, peace, wisdom, strength, or guidance. How can I help you today?",
+      sender: 'bot',
+      timestamp: new Date()
+    },
+    {
+      id: 2,
+      text: "Try asking me: 'I need prayer' or 'Tell me about faith' or 'I need hope'",
       sender: 'bot',
       timestamp: new Date()
     }
@@ -27,7 +34,8 @@ const BiblicalChatbot = () => {
     greetings: [
       "Peace be with you! How can I help you in your spiritual journey today?",
       "Blessings to you! What would you like to explore in God's Word?",
-      "Grace and peace! I'm here to help with any biblical questions you have."
+      "Grace and peace! I'm here to help with any biblical questions you have.",
+      "Welcome! I'm here to share biblical wisdom and provide spiritual encouragement. What's on your heart?"
     ],
     prayer: [
       "Prayer is our direct line to God. As it says in Philippians 4:6-7, 'Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God. And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.'",
@@ -58,54 +66,113 @@ const BiblicalChatbot = () => {
       "Jesus is our peace. In John 14:27, He says 'Peace I leave with you; my peace I give you. I do not give to you as the world gives. Do not let your hearts be troubled and do not be afraid.'",
       "Philippians 4:7 speaks of 'the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.'",
       "Isaiah 26:3 promises 'You will keep in perfect peace those whose minds are steadfast, because they trust in you.'"
+    ],
+    wisdom: [
+      "James 1:5 tells us 'If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you.'",
+      "Proverbs 9:10 says 'The fear of the Lord is the beginning of wisdom, and knowledge of the Holy One is understanding.'",
+      "Proverbs 3:5-6 reminds us to 'Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.'"
+    ],
+    strength: [
+      "Isaiah 40:31 promises 'But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.'",
+      "Philippians 4:13 declares 'I can do all this through him who gives me strength.'",
+      "2 Corinthians 12:9 reminds us that God's 'power is made perfect in weakness.'"
+    ],
+    guidance: [
+      "Psalm 32:8 says 'I will instruct you and teach you in the way you should go; I will counsel you with my loving eye on you.'",
+      "Proverbs 16:9 tells us 'In their hearts humans plan their course, but the Lord establishes their steps.'",
+      "Jeremiah 29:11 declares 'For I know the plans I have for you, plans to prosper you and not to harm you, to give you hope and a future.'"
     ]
   };
 
-  const getRandomResponse = (category) => {
-    const responses = biblicalResponses[category];
-    return responses[Math.floor(Math.random() * responses.length)];
+  const getRandomResponse = (responses) => {
+    if (!responses || responses.length === 0) {
+      console.error('No responses available for this category');
+      return "I apologize, but I'm having trouble finding a response for that topic. Please try asking about prayer, faith, love, or another biblical topic.";
+    }
+    const response = responses[Math.floor(Math.random() * responses.length)];
+    console.log('Selected response:', response);
+    return response;
   };
 
-  const generateResponse = (userMessage) => {
+  const generateFallbackResponse = (userMessage) => {
     const message = userMessage.toLowerCase();
+    console.log('Processing message with fallback:', message);
     
-    // Greeting patterns
-    if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
-      return getRandomResponse('greetings');
+    // Check for greetings
+    if (message.includes('hello') || message.includes('hi') || message.includes('hey') || message.includes('greetings') || message.includes('good morning') || message.includes('good evening')) {
+      console.log('Matched greetings');
+      return getRandomResponse(biblicalResponses.greetings);
     }
     
-    // Prayer-related
-    if (message.includes('pray') || message.includes('prayer')) {
-      return getRandomResponse('prayer');
+    // Check for prayer-related keywords
+    if (message.includes('pray') || message.includes('prayer') || message.includes('praying')) {
+      console.log('Matched prayer');
+      return getRandomResponse(biblicalResponses.prayer);
     }
     
-    // Faith-related
-    if (message.includes('faith') || message.includes('believe') || message.includes('trust')) {
-      return getRandomResponse('faith');
+    // Check for faith-related keywords
+    if (message.includes('faith') || message.includes('believe') || message.includes('trust') || message.includes('believing')) {
+      console.log('Matched faith');
+      return getRandomResponse(biblicalResponses.faith);
     }
     
-    // Love-related
-    if (message.includes('love') || message.includes('loving')) {
-      return getRandomResponse('love');
+    // Check for love-related keywords
+    if (message.includes('love') || message.includes('loving') || message.includes('compassion') || message.includes('kindness')) {
+      console.log('Matched love');
+      return getRandomResponse(biblicalResponses.love);
     }
     
-    // Forgiveness-related
-    if (message.includes('forgive') || message.includes('forgiveness') || message.includes('sin')) {
-      return getRandomResponse('forgiveness');
+    // Check for forgiveness-related keywords
+    if (message.includes('forgive') || message.includes('forgiveness') || message.includes('mercy') || message.includes('sin') || message.includes('repent')) {
+      return getRandomResponse(biblicalResponses.forgiveness);
     }
     
-    // Hope-related
-    if (message.includes('hope') || message.includes('hopeless') || message.includes('despair')) {
-      return getRandomResponse('hope');
+    // Check for hope-related keywords
+    if (message.includes('hope') || message.includes('hopeless') || message.includes('despair') || message.includes('discouraged') || message.includes('depression')) {
+      return getRandomResponse(biblicalResponses.hope);
     }
     
-    // Peace-related
-    if (message.includes('peace') || message.includes('anxiety') || message.includes('worry') || message.includes('stress')) {
-      return getRandomResponse('peace');
+    // Check for peace-related keywords
+    if (message.includes('peace') || message.includes('peaceful') || message.includes('anxiety') || message.includes('worry') || message.includes('stress') || message.includes('calm')) {
+      return getRandomResponse(biblicalResponses.peace);
     }
     
-    // Default response
-    return "That's a thoughtful question. While I can share biblical wisdom, I encourage you to also pray about this and seek guidance from your pastor or spiritual mentor. Is there a specific Bible verse or topic you'd like to explore?";
+    // Check for wisdom-related keywords
+    if (message.includes('wisdom') || message.includes('wise') || message.includes('decision') || message.includes('choice')) {
+      return getRandomResponse(biblicalResponses.wisdom);
+    }
+    
+    // Check for strength-related keywords
+    if (message.includes('strength') || message.includes('strong') || message.includes('weak') || message.includes('tired') || message.includes('exhausted') || message.includes('power')) {
+      return getRandomResponse(biblicalResponses.strength);
+    }
+    
+    // Check for guidance-related keywords
+    if (message.includes('guide') || message.includes('guidance') || message.includes('path') || message.includes('way') || message.includes('lost') || message.includes('confused') || message.includes('plan')) {
+      return getRandomResponse(biblicalResponses.guidance);
+    }
+    
+    // Default response with more helpful suggestions
+    console.log('Using default response');
+    return "I'd be happy to help you explore God's Word! You can ask me about prayer, faith, love, forgiveness, hope, peace, wisdom, strength, or guidance. Feel free to share what's on your heart, and I'll do my best to provide biblical encouragement.";
+  };
+
+  const generateResponse = async (userMessage) => {
+    // Try Google AI first if configured
+    if (isGoogleAIConfigured()) {
+      try {
+        console.log('Using Google AI for response');
+        const aiResponse = await generateBiblicalResponse(userMessage);
+        return aiResponse;
+      } catch (error) {
+        console.error('Google AI failed, falling back to predefined responses:', error);
+        // Fall back to predefined responses if AI fails
+        return generateFallbackResponse(userMessage);
+      }
+    } else {
+      console.log('Google AI not configured, using fallback responses');
+      return generateFallbackResponse(userMessage);
+    }
   };
 
   const handleSendMessage = async (e) => {
@@ -114,27 +181,41 @@ const BiblicalChatbot = () => {
 
     const userMessage = {
       id: Date.now(),
-      text: inputMessage,
+      text: inputMessage.trim(),
       sender: 'user',
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputMessage.trim();
     setInputMessage('');
     setIsTyping(true);
 
-    // Simulate typing delay
-    setTimeout(() => {
-      const botResponse = {
-        id: Date.now() + 1,
-        text: generateResponse(inputMessage),
-        sender: 'bot',
-        timestamp: new Date()
-      };
-      
-      setMessages(prev => [...prev, botResponse]);
-      setIsTyping(false);
-    }, 1500);
+    // Simulate typing delay for more natural conversation
+    setTimeout(async () => {
+      try {
+        const responseText = await generateResponse(currentInput);
+        const botResponse = {
+          id: Date.now() + 1,
+          text: responseText,
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        
+        setMessages(prev => [...prev, botResponse]);
+      } catch (error) {
+        console.error('Error generating response:', error);
+        const errorResponse = {
+          id: Date.now() + 1,
+          text: "I apologize, but I'm having trouble responding right now. Please try asking again, and I'll do my best to help you with biblical guidance.",
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, errorResponse]);
+      } finally {
+        setIsTyping(false);
+      }
+    }, 800 + Math.random() * 800);
   };
 
   return (
